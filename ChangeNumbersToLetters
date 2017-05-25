@@ -1,0 +1,178 @@
+package Application;
+import java.util.Scanner;
+
+public class ChangeNumbersToLetters {
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Introduceti suma in cifre: ");
+        long suma = scan.nextLong();
+        if (suma < 0) {
+            System.out.println(" Numar incorect! ");
+            return;
+        }
+        System.out.println("\n Suma introdusa in litere este:" + aflaSumaInLitere(suma));
+
+    }
+// calculul efectiv
+
+    public static String aflaSumaInLitere(long pSuma) {
+        String a = "" + pSuma;
+        int numarCifre = a.length();
+        if (numarCifre <= 3) {
+            if (pSuma == 0) {
+                return "Zero";
+            }
+            else {
+                return afiseazaSutele((int) pSuma);
+            }
+        }
+        else if (numarCifre == 4) {
+            if (pSuma / 1000 == 1) {
+                return " o mie " + afiseazaSutele((int) (pSuma - ((pSuma / 1000) * 1000)));
+            }
+            else if (pSuma / 1000 == 2) {
+                return " doua mii " + afiseazaSutele((int) (pSuma - ((pSuma / 1000) * 1000)));
+            }
+            else {
+                String cifraMii = afiseazaCifrele((int) pSuma / 1000);
+                return cifraMii + " mii " + afiseazaSutele((int) (pSuma - ((pSuma / 1000) * 1000)));
+            }
+        }
+        else if (numarCifre <= 6) {
+            int aux = (int) ((pSuma - (pSuma % 1000)) / 1000);
+            String verificare = afiseazaSutele((int) pSuma % 1000);
+            if (verificare.equals("")) {
+                return afiseazaSutele(aux) + " de mii ";
+            }
+            else {
+                return afiseazaSutele(aux) + " de mii " + verificare;
+            }
+        }
+        else if (numarCifre <= 9) {
+            int sute = (int) (pSuma % 1000);
+            int mii = (int) ((pSuma - sute) % 1000000 / 1000);
+            int milioane = (int) ((pSuma - (pSuma % 1000000)) / 1000000);
+            String verificareMii = afiseazaSutele(mii);//pt sute
+            String verificareSute = afiseazaSutele(sute);//pt sute de mii
+            if (verificareMii.equals("")) {
+                if (verificareSute.equals("")) {
+                    return afiseazaSutele(milioane) + " de milioane ";
+                }
+                else {
+                    return afiseazaSutele(milioane) + " de milioane " + afiseazaSutele(sute);
+                }
+            }
+            else if (verificareSute.equals("")) {
+                return afiseazaSutele(milioane) + " de milioane " + afiseazaSutele(mii) + " mii ";
+            }
+            else {
+                return afiseazaSutele(milioane) + " de milioane " + afiseazaSutele(mii) + " mii " + afiseazaSutele(sute);
+            }
+        }
+        else {
+            return "Calculul numerelor mai mari de 999 999 999 se va face alta daata";
+        }
+    }
+
+    public static String afiseazaSutele(int pSute) {
+        if (pSute < 100) {
+            return afiseazaZecile(pSute);
+        }
+        else if (pSute / 100 == 1) {
+            String aux = afiseazaZecile(pSute - 100);
+            if (aux.equals("")) {
+                return " o suta ";
+            }
+            else {
+                return " o suta " + aux;
+            }
+        }
+        else if (pSute / 100 == 2) {
+            String aux = afiseazaZecile(pSute - 200);
+            if (aux.equals("")) {
+                return " doua sute ";
+            }
+            else {
+                return " doua sute " + aux;
+            }
+        }
+        else {
+            String cifraSute = afiseazaCifrele(pSute / 100);
+            return cifraSute + " sute " + afiseazaZecile(pSute - ((pSute / 100) * 100));
+        }
+    }
+
+    public static String afiseazaZecile(int pZeci) {
+        if (pZeci < 10) {
+            return afiseazaCifrele(pZeci);
+        }
+        else if (pZeci < 20) {
+            switch (pZeci) {
+                default:
+                    return " zece ";
+                case 11:
+                    return " unsprezece ";
+                case 12:
+                    return " doisprezece ";
+                case 13:
+                    return " treisprezece ";
+                case 14:
+                    return " paisprezece ";
+                case 15:
+                    return " cincisprezece";
+                case 16:
+                    return " saisprezece ";
+                case 17:
+                    return " saptesprezece ";
+                case 18:
+                    return " optsprezece ";
+                case 19:
+                    return " nouasprezece ";
+            }
+        }
+        else if (pZeci < 30) {
+            String aux = afiseazaCifrele(pZeci % 10);
+            if (aux.equals("")) {
+                return " doua zeci ";
+            }
+            else {
+                return " doua zeci si " + aux;
+            }
+        }
+        else {
+            String cifraZeci = afiseazaCifrele((pZeci / 10) % 10);
+            String aux = afiseazaCifrele(pZeci % 10);
+            if (aux.equals("")) {
+                return cifraZeci + " zeci ";
+            }
+            else {
+                return cifraZeci + " zeci si " + aux;
+            }
+        }
+    }
+
+    public static String afiseazaCifrele(int pCifra) {
+        switch (pCifra) {
+            case 1:
+                return " unu ";
+            case 2:
+                return " doi ";
+            case 3:
+                return " trei ";
+            case 4:
+                return " patru ";
+            case 5:
+                return " cinci ";
+            case 6:
+                return " sase ";
+            case 7:
+                return " sapte ";
+            case 8:
+                return " opt ";
+            case 9:
+                return " noua ";
+            default:
+                return "";
+        }
+    }
+}
